@@ -5,8 +5,14 @@ import pandas as pd
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
 
-print(df.columns[7])
-print(pd.unique(df[df.columns[7]]))
+#print(df.columns[7])
+#print(pd.unique(df[df.columns[7]]))
+
+
+postal_codes = df[df.columns[6]].dropna().astype(int)
+grouped_pc = postal_codes.value_counts()
+
+print(len(grouped_pc))
 
 transport_types = {
     "active": [
