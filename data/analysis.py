@@ -3,16 +3,13 @@
 import numpy
 import pandas as pd
 import re
+import harversine
 
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
 
-#print(df.columns[7])
-#print(pd.unique(df[df.columns[7]]))
-
-
-postal_codes = df[df.columns[6]].dropna().astype(int)
-grouped_pc = postal_codes.value_counts()
+#postal_codes = df[df.columns[6]].dropna().astype(int)
+#grouped_pc = postal_codes.value_counts()
 
 #grouped_pc.to_csv("codes.csv")
 
@@ -43,7 +40,7 @@ uni_coord = {
 
 stu = df[[codes, univs]]
 
-#print(stu)
+# map universities to coords
 
 def univ_coords(u):
     try:
@@ -52,7 +49,45 @@ def univ_coords(u):
         return None
 
 new_uni_coo = stu[univs].apply(univ_coords)
-print(new_uni_coo)
+
+# map postal codes to coords
+
+with open("../cv-to-loc.csv") as f:
+    cp_coo = pd.read_csv(f)
+
+cp_to_coo = {}
+for (i, row) in cp_coo.iterrows():
+    cp_to_coo[int(row[2])] = (row[0], row[1])
+
+def cp_coords(cp):
+    try:
+        return cp_to_coo[cp]
+    except:
+        return None
+
+new_cp_coo = stu[codes].apply(cp_coords)
+
+new_df = pd.concat([
+    new_cp_coo.to_frame(name="cp"),
+    new_uni_coo.to_frame(name="uni")
+], axis=1)
+
+# add a new column to calc þe distance from cp to uni
+def get_row_dist(row):
+    if row[0] is None or row[1] is None:
+        return None
+    return harversine.distance(
+        row[0][0],
+        row[1][0],
+        row[0][1],
+        row[1][1]
+    )
+
+new_df["dist"] = new_df \
+    .apply(get_row_dist, axis=1) \
+    .dropna() #subset=["dist"])
+
+print(new_df)
 
 transport_types = {
     "active": [
@@ -77,4 +112,3 @@ transport_types = {
     ]
 }
 # https://www.cartociudad.es/web/portal/herramientas-calculos/conversor
-
