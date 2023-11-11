@@ -1,20 +1,23 @@
 import geocoder
 import pandas as pd
-from pyproj import Proj
-
-
-def convert_to_utm(lat: float, lng: float):
-    utm_proj = Proj(proj='utm', zone=10, ellps='WGS84')
-
-    try:
-        easting, northing = utm_proj(lng, lat)
-        return [easting, northing]
-    except Exception as e:
-        raise ValueError("Invalid latitude or longitude values.") from e
+import re
+import numpy
+import math
 
 with open("data/Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
 
+#postal_codes = df[df.columns[6]].dropna().astype(int)
+#grouped_pc = postal_codes.value_counts()
+
+#grouped_pc.to_csv("codes.csv")
+
+codes = df.columns[6]
+univs = df.columns[3]
+
+univs_pcodes = pd.unique(df[codes]) #.dropna().astype(int)
+sigla = re.compile(r"\([A-Z]+\)")
+filter_sigla = numpy.vectorize(lambda s: sigla.search(str(s)).group(0))
 
 postal_codes = df[df.columns[6]].dropna().astype(int)
 grouped_pc = postal_codes.value_counts()
@@ -37,6 +40,7 @@ uni_coord = {
     'EPSEVG'    : (41.22222313520440, 1.7316575553370623),
     'EETAC'     : (41.27571168805547, 1.9879474564334807)
 }
+
 transport_types = {
     "active": [
         "On foot",
@@ -64,22 +68,40 @@ with open("codes.csv") as f:
     pc = pd.read_csv(f, names=["codi_postal", "n"])
     pc = pc.iloc[1:]
 
+def sanitize_cp(str):
+    if math.isnan(float(str)):
+        return 0
+    return int(float(str))
+
 k = 0
 
+areas = {}
 
-with open("cv-to-loc.csv", "w") as f:
-    f.write("lon, lat, cp, n\n")
-    for i, row in pc.iterrows():
 
-        cp = str(row["codi_postal"])
-        n = int(row["n"])
-        cp = cp[:-2]
-        cp = '0' * (5 - len(cp)) + cp
+with open("alumni.csv", 'w') as f:
+    f.write("id,lon,lat,genere,codi_postal,uni,any,dies,a_s1,a_s2,a_s3,t_s1,t_s2,t_3\n")
+    for i, row in df.iterrows():
         
-        loc = geocoder.osm(cp + ", Spain")
-        if not (loc.latlng is None):
-            d = [[loc.latlng[0], loc.latlng[1]], cp, n]
-            k = k + 1
-            print(d)
-            print(str(k) + "/" + str(len(pc)))
-            f.write(str(d[0][0]) + "," + str(d[0][1]) + "," + str(d[1]) + "," + str(d[2]) + "\n")
+        lon = 3
+        lat = 45
+
+        f.write(str(row["id"]) + ",")
+        f.write(str(lon) + ",")
+        f.write(str(lat) + ",")
+        f.write(str(row["Which of the following options do you identify with most?"]) + ",")
+        f.write(str(sanitize_cp(row["Please indicate the postal code from where you usually start your trip to the university:"])) + ",")
+        
+        f.write("\n")
+
+for i, row in pc.iterrows():
+
+    cp = str(row["codi_postal"])
+    cp = cp[:-2]
+    cp = '0' * (5 - len(cp)) + cp
+    
+    loc = geocoder.osm(cp + ", Spain")
+    if not (loc.latlng is None):
+        areas[cp] = [loc.json["bbox"]["northeast"], loc.json["bbox"]["southwest"]]
+        k = k + 1
+        print(areas[cp])
+        print(str(k) + "/" + str(len(pc)))

@@ -4,6 +4,8 @@ import numpy
 import pandas as pd
 import re
 import harversine
+import geocoder
+import random
 
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
@@ -52,20 +54,33 @@ new_uni_coo = stu[univs].apply(univ_coords)
 
 # map postal codes to coords
 
-with open("../cv-to-loc.csv") as f:
-    cp_coo = pd.read_csv(f)
+with open("./boxes.csv") as f:
+    boxes_p = pd.read_csv(f)
 
 cp_to_coo = {}
-for (i, row) in cp_coo.iterrows():
-    cp_to_coo[int(row[2])] = (row[0], row[1])
+
+for i, row in boxes_p.iterrows():
+    cp_to_coo[row["cp"]] = [[float(row["ne_lon"]), float(row["ne_lat"])], [float(row["sw_lon"]), float(row["sw_lat"])]]
+
 
 def cp_coords(cp):
     try:
-        return cp_to_coo[cp]
+        mod_cp = str(cp)
+        mod_cp = mod_cp[:-2]
+        mod_cp = '0' * (5 - len(mod_cp)) + mod_cp
+
+        ne = cp_to_coo[int(mod_cp)][0]
+        sw = cp_to_coo[int(mod_cp)][1]
+
+        x = sw[0] + (ne[0] - sw[0]) * random.random()
+        y = sw[1] + (ne[1] - sw[0]) * random.random()
+        
+        return (x,y)
     except:
         return None
 
 new_cp_coo = stu[codes].apply(cp_coords)
+print(new_cp_coo)
 
 new_df = pd.concat([
     new_cp_coo.to_frame(name="cp"),
@@ -90,27 +105,27 @@ new_df["dist"] = new_df \
 
 
 def maybe_int(f):
-    print(f)
+    # print(f)
     try:
         i = int(f)
-        print("ok")
+        # print("ok")
         return i
     except:
         return None
 
 new_df["codi"] = stu[codes].apply(maybe_int)
 
-#new_df[["cp-lat", "cp-lon"]] = pd.DataFrame(
-#    new_df["cp"].values.tolist(),
-#    columns = ["cp-lat", "cp-lon"]
-#)
+new_df[["cp-lat", "cp-lon"]] = pd.DataFrame(
+    new_df["cp"].values.tolist(),
+    columns = ["cp-lat", "cp-lon"]
+)
 
 new_df[["uni-lat", "uni-lon"]] = pd.DataFrame(
     new_df["uni"].values.tolist(),
     columns = ["uni-lat", "uni-lon"]
 )
 
-new_df = new_df.drop(columns=["cp", "uni"])
+new_df = new_df.drop(columns=["uni", "cp", "codi"])
 
 new_df.to_csv("cp-uni.csv")
 
