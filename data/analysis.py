@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import numpy
 import pandas as pd
+import re
 
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
@@ -12,7 +14,18 @@ with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
 postal_codes = df[df.columns[6]].dropna().astype(int)
 grouped_pc = postal_codes.value_counts()
 
-grouped_pc.to_csv("codes.csv")
+#grouped_pc.to_csv("codes.csv")
+
+univs_pcodes = pd.unique(df[df.columns[3]]) #.dropna().astype(int)
+sigla = re.compile(r"\([A-Z]+\)")
+filter = numpy.vectorize(lambda s: sigla.search(s).group(0))
+univs_pcodes = filter(univs_pcodes)
+
+#['(ESEIAAT)' '(ETSAB)' '(ETSEIB)' '(EPSEM)' '(ETSECCPB)' '(FIB)'
+# '(ETSETB)' '(FME)' '(ETSAV)' '(EEBE)' '(EPSEB)' '(EEABB)' '(FOOT)'
+#  '(EPSEVG)' '(EETAC)' '(FNB)']
+
+print(univs_pcodes)
 
 transport_types = {
     "active": [
