@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('Datathon_Results_MOBILITY_2022_original_Students.csv')
+df = pd.read_csv('../Datathon_Results_MOBILITY_2022_original_Students.csv')
 
 transport_types_inverted = {
     'On foot': 'active',
@@ -43,5 +43,5 @@ for ttype in ["private", "public", "active"]:
         'Other' : sum(df[df.columns[21]].value_counts())
     }
     plt.pie(reasons_type.values(), labels = reasons_type.keys())
-    #plt.show()
     plt.savefig(f"{ttype}.svg")
+    plt.clf()
