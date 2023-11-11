@@ -87,7 +87,22 @@ new_df["dist"] = new_df \
     .apply(get_row_dist, axis=1) \
     .dropna() #subset=["dist"])
 
-print(new_df)
+#print(new_df)
+
+
+new_df[["cp-lat", "cp-lon"]] = pd.DataFrame(
+    new_df["cp"].values.tolist(),
+    columns = ["cp-lat", "cp-lon"]
+)
+
+new_df[["uni-lat", "uni-lon"]] = pd.DataFrame(
+    new_df["uni"].values.tolist(),
+    columns = ["uni-lat", "uni-lon"]
+)
+
+new_df = new_df.drop(columns=["cp", "uni"])
+
+new_df.to_csv("cp-uni.csv")
 
 transport_types = {
     "active": [
