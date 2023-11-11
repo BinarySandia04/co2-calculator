@@ -1,0 +1,7 @@
+https://www.cbo.gov/system/files/2022-12/58566-co2-emissions-transportation.pdf
+pounds / passenger-mile - kg / passenger-km
+
+Personal vehicles = 0.47 = 0.1325
+bus               = 0.39 = 0.1100
+passanger rail    = 0.30 = 0.0846
+
