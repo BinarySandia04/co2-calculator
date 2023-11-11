@@ -16,10 +16,13 @@ grouped_pc = postal_codes.value_counts()
 
 #grouped_pc.to_csv("codes.csv")
 
-univs_pcodes = pd.unique(df[df.columns[3]]) #.dropna().astype(int)
+codes = df.columns[6]
+univs = df.columns[3]
+
+univs_pcodes = pd.unique(df[codes]) #.dropna().astype(int)
 sigla = re.compile(r"\([A-Z]+\)")
-filter = numpy.vectorize(lambda s: sigla.search(s).group(0))
-univs_pcodes = filter(univs_pcodes)
+filter_sigla = numpy.vectorize(lambda s: sigla.search(str(s)).group(0))
+#univs_pcodes = filter_sigla(univs_pcodes)
 uni_coord = {
     'ESEIAAT'   : (41.5640438, 2.0227191),
     'ETSAB'     : (41.3839393, 2.1139678),
@@ -38,7 +41,18 @@ uni_coord = {
     'EETAC'     : (41.27571168805547, 1.9879474564334807)
 }
 
-print(univs_pcodes)
+stu = df[[codes, univs]]
+
+#print(stu)
+
+def univ_coords(u):
+    try:
+        return uni_coord[sigla.search(u).group(0)[1:-1]]
+    except:
+        return None
+
+new_uni_coo = stu[univs].apply(univ_coords)
+print(new_uni_coo)
 
 transport_types = {
     "active": [
@@ -63,3 +77,4 @@ transport_types = {
     ]
 }
 # https://www.cartociudad.es/web/portal/herramientas-calculos/conversor
+
