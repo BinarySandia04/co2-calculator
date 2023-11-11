@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('Datathon_Results_MOBILITY_2022_original_Students.csv')
+df = pd.read_csv('../Datathon_Results_MOBILITY_2022_original_Students.csv')
 
 transport_types_inverted = {
     'On foot': 'active',
@@ -28,7 +31,7 @@ def get_transport_type(t):
 
 df["transport_types"] = df[df.columns[7]].apply(get_transport_type)
 
-cpuni = pd.read_csv("cp-uni.csv")
+cpuni = pd.read_csv("../cp-uni.csv")
 
 dg = pd.merge(
     df["transport_types"],
@@ -38,11 +41,27 @@ dg = pd.merge(
 )
 dg.head()
 
-print("hola")
-for x in [3, 10, 25]:
-    dg_menys_x = dg[dg["dist"]<=x]
-    print("hola")
-    print(dg_menys_x["transport_types"].count_values())
-    
-    #plt.pie(reasons_type.values(), labels = reasons_type.keys())
-    #plt.savefig(f"menys de {x}")
+cols = []
+kms = [2.1, 4.7, 10, 21, 47]
+for x in kms:
+    dg_x = dg[dg["dist"] <= x]["transport_types"].value_counts()
+    aux = 1.0 / sum(dg_x)
+    d = {row[0]: row[1] * aux for row in dg_x.iteritems()}
+    cols.append([row[1] * aux for row in dg_x.iteritems()])
+    #plt.pie(d.values(), labels = d.keys())
+    #plt.savefig(f"menys_de_{x}.svg")
+    #plt.clf()
+
+print(cols)
+x = np.array(cols, dtype=float).transpose()
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+ax.stackplot(kms, x)
+ax.set_title('Relative usage:\nactive-public-private')
+ax.set_ylabel('Percent (%)')
+ax.set_xlabel('Less than _ km')
+#ax.margins(0, 0) # Set margins to avoid "whitespace"
+
+plt.savefig("menys_de_x.svg")
