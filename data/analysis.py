@@ -5,6 +5,28 @@ import pandas as pd
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
 
-print(df[df.columns[7]])
-print(df[df.columns[8]])
-print(df[df.columns[9]])
+print(df.columns[7])
+print(pd.unique(df[df.columns[7]]))
+
+transport_types = {
+    "active": [
+        "On foot",
+        "Bicycle"
+    ],
+    "public": [
+        "Bus",
+        "Renfe",
+        "Underground",
+        "FGC",
+        "Tram"
+    ],
+    "private": [
+        "Combustion vehicle (non-plug-in hybrid, electric or plug-in hybrid with non-renewable source charging),",
+        "Combustion or electric motorcycle with non-renewable source charging",
+        "Scooter (or other micro-mobility devices) with renewable charging",
+        "Taxi",
+        "Electric vehicle (with Zero label and renewable source charging)",
+        "Scooter (or other micro-mobility devices) with non-renewable charging",
+        "Electric motorcycle"
+    ]
+}
