@@ -12,7 +12,7 @@ with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
 postal_codes = df[df.columns[6]].dropna().astype(int)
 grouped_pc = postal_codes.value_counts()
 
-print(len(grouped_pc))
+grouped_pc.to_csv("codes.csv")
 
 transport_types = {
     "active": [
