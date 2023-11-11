@@ -72,8 +72,8 @@ def cp_coords(cp):
         ne = cp_to_coo[int(mod_cp)][0]
         sw = cp_to_coo[int(mod_cp)][1]
 
-        x = sw[0] + (ne[0] - sw[0]) * random.random()
-        y = sw[1] + (ne[1] - sw[0]) * random.random()
+        x = sw[0] + (ne[0] - sw[0]) * 0.5 * (1 + (random.random() - 0.5) * 0.1)
+        y = sw[1] + (ne[1] - sw[1]) * 0.5 * (1 + (random.random() - 0.5) * 0.1)
         
         return (x,y)
     except:
