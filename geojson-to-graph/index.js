@@ -12,7 +12,7 @@ const epsilon = 0.5;
 // p1 = [lon, lat]
 // Això son quilòmetres!!!!!!! 
 function Dist(p1, p2){
-    var lon1 = p1[0] * 180 / Math.PI, lat1 = p1[1] * 180 / Math.PI, lon2 = p2[0] * 180 / Math.PI, lat2 = p2[1] * 180 / Math.PI;
+    var lat1 = p1[0] * Math.PI / 180, lon1 = p1[1] * Math.PI / 180, lat2 = p2[0] * Math.PI / 180, lon2 = p2[1] * Math.PI / 180;
     var dlon = lon2 - lon1;
     var dlat = lat2 - lat1;
 
@@ -81,17 +81,47 @@ function CreateLine(name, type, totalTypes, agency){
     }    
 }
 
-function GetStartIndex(line){
-    console.log("Set the first station for line " + line.name + "");
-    
-    var i = 1;
-    line.stations.forEach((station) => {
-        console.log(i + ": " + station["name"])
-        i += 1;
-    })
+function GetStartIndex(line){    
+    var minIndex = -1;
+    var minDistance = Infinity;
 
-    console.log("> ");
-    return readlineSync.question("");
+    var stations = line["stations"];
+
+    for(var j = 0; j < line.stations.length; j++){
+
+        var firstIndex = j;
+        var first = stations[firstIndex];
+
+        var stats = [...stations];
+    
+        stats.splice(firstIndex, 1);
+    
+        while(stats.length > 0){
+            var min = Infinity;
+            var index = -1;
+            var i = 0;
+            stats.forEach((st) => {
+                d = Dist(first["coords"], st["coords"])
+                if(d < min){
+                    min = d;
+                    index = i;
+                }
+                i = i + 1;
+            });
+            
+            firstIndex = index;
+    
+            stats.splice(firstIndex, 1);
+
+            if(min < minDistance){
+                minDistance = min;
+                minIndex = j;
+            }
+        }
+    
+    }
+
+    return minIndex;
 }
 
 let finalInfo = {
@@ -157,7 +187,7 @@ fs.readdir('./geojson/', (err, files) => {
 
     for (const [key, value] of Object.entries(finalInfo["lines"])) {
         first = GetStartIndex(value);
-        value.edges = GetFinalLineData(value, first - 1);
+        value.edges = GetFinalLineData(value, first);
 
         for(var i = 0; i < value.edges.length; i++){
             finalInfo.stations.push(value.edges[i]);
