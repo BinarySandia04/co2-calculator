@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('Datathon_Results_MOBILITY_2022_original_Students.csv')
+df = pd.read_csv('../data/input/Datathon_Results_MOBILITY_2022_original_Students.csv')
 
 transport_types_inverted = {
     'On foot': 'active',
@@ -28,7 +28,7 @@ def get_transport_type(t):
 
 df["transport_types"] = df[df.columns[7]].apply(get_transport_type)
 
-cpuni = pd.read_csv("cp-uni.csv")
+cpuni = pd.read_csv("../data/output/cp-uni.csv")
 
 dg = pd.merge(
     df["transport_types"],

@@ -21,7 +21,7 @@
 import React, {Component} from 'react';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import styled, {ThemeProvider} from 'styled-components';
-import window from 'global/window';
+import window from 'global';
 import {connect} from 'react-redux';
 
 import {theme} from '@kepler.gl/styles';
