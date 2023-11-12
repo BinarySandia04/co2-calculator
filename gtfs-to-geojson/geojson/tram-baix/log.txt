@@ -1,0 +1,8 @@
+Feed Version: 14
+GTFS-to-geoJSON Version: 3.4.4
+Date Generated: Sun Nov 12 2023 07:06:18 GMT+0100 (hora estándar de Europa central)
+Route Count: 0
+Shape Count: 0
+GeoJSON File Count: 1
+Output Type: agency
+Source: ./TBX.zip

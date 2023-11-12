@@ -11,6 +11,14 @@
       {
         "agency_key": "fgc",
         "path": "./fgc.zip"
+      },
+      {
+        "agency_key": "tram-baix",
+        "path": "./TBX.zip"
+      },
+      {
+        "agency_key": "tram-besos",
+        "path": "./TBS.zip"
       }
     ]
   }
