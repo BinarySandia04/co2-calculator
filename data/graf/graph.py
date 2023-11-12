@@ -8,8 +8,8 @@ class Co2Graph:
         self.size = size
         self.neibrs = {n: [] for n in range(size)}
         for e in edges: # expected 4-tuple or 4-list
-            self.neibrs[e[0]].append((e[1], e[2], e[3]))
-            self.neibrs[e[1]].append((e[0], e[2], e[3]))
+            self.neibrs[e[0]].append((e[1], e[2], e[3], e[4]))
+            self.neibrs[e[1]].append((e[0], e[2], e[3], e[4]))
 
     """
     expected json
@@ -62,7 +62,7 @@ class Co2Graph:
 
         while not q.empty():
             dist_marked, marked = q.get()
-            for (nei, w1, w2) in self.neibrs[marked]:
+            for (nei, w1, w2, w3) in self.neibrs[marked]:
                 alt = dist_marked + (1+w1*w2)
                 if alt < dist[nei]:  # dist[nei] == POS_INFTY
                     dist[nei] = alt
@@ -78,7 +78,10 @@ class Co2Graph:
 
         path = inv_path[::-1]
         co2 = 0.0
+        dist = 0.0
+        time = 0.0
         for i in range(len(path)-1):
             co2 += self.get_wi(path[i], path[i+1], 2)
-
-        return path, co2
+            dist += self.get_wi(path[i], path[i+1], 1)
+            time += self.get_wi(path[i], path[i+1], 1) / self.get_wi(path[i], path[i+1], 3) / 3.6
+        return path, dist, co2, time

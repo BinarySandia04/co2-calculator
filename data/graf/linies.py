@@ -24,8 +24,10 @@ def get_closest(lon, lat):
     return min_i
 
 
-path, co2 = g.dijkstra(0, 1000)
-print(path)
-print(co2)
-print(get_closest(2.1, 41.3))
-print(g.dijkstra(get_closest(2.168169319461955, 41.423716007440184), get_closest(2.1134082704685526,41.38960859091039)))
+
+path, dist, co2, time = g.dijkstra(get_closest(2.156951683482, 41.437703385), get_closest(1.86273657118123, 41.669071244295))
+for p in path:
+    print(j["nodes"][p])
+print("Dist: " + str(dist))
+print("CO2:  " + str(co2))
+print("Time: " + str(time))
