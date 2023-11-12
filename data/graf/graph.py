@@ -25,6 +25,10 @@ class Co2Graph:
     def load_json(cls, p):
         f = open(p, "r")
         j = json.loads(f.read())
+        return cls.from_json(j)
+
+    @classmethod
+    def from_json(cls, j):
         return cls(j["size"], j["edges"])
 
     def get_neibrs(self, node):
