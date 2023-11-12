@@ -33,6 +33,12 @@ class Co2Graph:
     def nodes(self):
         return list(range(self.size))
 
+    def get_wi(self, n1, n2, i):
+        for n in self.neibrs[n1]:
+            if n[0] == n2:
+                return n[i]
+        return None
+
     def dijkstra(self, orig, dest):
         if orig == dest: # initial check
             return [orig], 0.0
@@ -53,7 +59,7 @@ class Co2Graph:
         while not q.empty():
             dist_marked, marked = q.get()
             for (nei, w1, w2) in self.neibrs[marked]:
-                alt = dist_marked + w1
+                alt = dist_marked + (1+w1*w2)
                 if alt < dist[nei]:  # dist[nei] == POS_INFTY
                     dist[nei] = alt
                     prev[nei] = marked
@@ -67,5 +73,8 @@ class Co2Graph:
         inv_path.append(orig)
 
         path = inv_path[::-1]
-        cost = dist[dest]
-        return path, cost
+        co2 = 0.0
+        for i in range(len(path)-1):
+            co2 += self.get_wi(path[i], path[i+1], 2)
+
+        return path, co2
