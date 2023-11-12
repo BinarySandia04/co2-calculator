@@ -8,7 +8,7 @@ from linies import *
 app = Flask(__name__)
 
 
-@app.route("/asdasd", methods=["POST"])
+@app.route("/calc", methods=["POST"])
 def patata():
     j = request.json["fromto"]
     ## fotre aqui el geocode
@@ -26,3 +26,7 @@ def patata():
         "time": time
     }
     return jsonify(d), 200
+
+
+if __name__ == '__main__':
+    app.run(host="localhost", port=3001, debug=True)
