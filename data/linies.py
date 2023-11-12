@@ -33,15 +33,45 @@ def hours_to_string(hf):
 
 
 def get_path_data(lon1, lat1, lon2, lat2):
+    print((lon1, lat1, lon2, lat2))
     try:
-        res = g.dijkstra(
+        dist = harversine.distance(lat1, lat2, lon1, lon2)
+        time = 0
+        co2 = 0
+        if dist < 2:
+            # Caminant
+            time += dist / 5 / 10
+        elif dist < 5:
+            # Bici
+            time += dist / 15 / 10
+        else:
+            # Coche
+            time += dist / 40 / 10
+            co2 += 0.154 * dist / 10
+
+        d, c, t = g.dijkstra(
             get_closest(lon1, lat1),
             get_closest(lon2, lat2)
         )
-        if len(res) != 3:
-            return None, None, None
-        print(res)
-        return res
+        
+        dist /= 10
+        dist += d
+        co2 += c
+        time += t
+        d = harversine.distance(lat1, lat2, lon1, lon2)
+        if d < 1.5:
+            # Caminant
+            time += d / 5 / 10
+        elif d < 3:
+            # Bici
+            time += d / 15 / 10
+        else:
+            # Coche
+            time += d / 40 / 10
+            co2 += 0.154 * d / 10
+        print("Done right")
+        
+        return (dist + d / 10, co2, time)
     except:
         return None, None, None
     

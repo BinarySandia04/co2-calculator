@@ -30,7 +30,8 @@ def patata():
         d = {
             "dist": km,
             "co2": co2,
-            "time": time
+            "time": time,
+            "car_emissions": km * 0.154
         }
 
         print(d)
