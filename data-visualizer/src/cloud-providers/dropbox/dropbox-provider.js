@@ -20,7 +20,7 @@
 
 // DROPBOX
 import {Dropbox} from 'dropbox';
-import window from 'global/window';
+import window from 'global';
 import Console from 'global/console';
 import DropboxIcon from './dropbox-icon';
 import {MAP_URI} from '../../constants/default-settings';

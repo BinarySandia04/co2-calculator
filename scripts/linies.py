@@ -69,7 +69,6 @@ def get_path_data(lon1, lat1, lon2, lat2):
             # Coche
             time += d / 40 / 10
             co2 += 0.154 * d / 10
-        print("Done right")
         
         return (dist + d / 10, co2, time)
     except:

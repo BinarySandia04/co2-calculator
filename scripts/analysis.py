@@ -8,7 +8,7 @@ import harversine
 import random
 from linies import *
 
-with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
+with open("../data/input/Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
 
 #postal_codes = df[df.columns[6]].dropna().astype(int)
@@ -55,7 +55,7 @@ new_uni_coo = stu[univs].apply(univ_coords)
 
 # map postal codes to coords
 
-with open("./boxes.csv") as f:
+with open("../data/output/boxes.csv") as f:
     boxes_p = pd.read_csv(f)
 
 cp_to_coo = {}
@@ -132,7 +132,7 @@ new_df = new_df.dropna()
 new_df["real_dist"], new_df["co2"], new_df["time"] = zip(*map(get_path_data, new_df["cp-lon"], new_df["cp-lat"], new_df["uni-lon"], new_df["uni-lat"]))
 new_df = new_df.drop(columns=["uni", "cp", "codi"])
 
-new_df.to_csv("cp-uni.csv")
+new_df.to_csv("../data/output/cp-uni.csv")
 
 '''
 transport_types = {
