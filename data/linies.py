@@ -39,7 +39,8 @@ def get_path_data(lon1, lat1, lon2, lat2):
             get_closest(lon2, lat2)
         )
         if len(res) != 3:
-            return (0,0,0)
+            return None, None, None
+        print(res)
         return res
     except:
         return None, None, None
