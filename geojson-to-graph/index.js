@@ -66,12 +66,20 @@ function CreateLine(name, type, totalTypes, agency){
     if(include == ""){
         if(totalTypes[type] === undefined){
             console.log("(0: P, 1: B, 2: R) Set type for " + agency + " - " + name);
-            totalTypes[type] = type_dict[readlineSync.question("")];
+
+            totalTypes[type] = {}
+
+            totalTypes[type]["co2km"] = type_dict[readlineSync.question("")];
+            console.log("Set km/h: ");
+            
+            kmh = parseFloat(readlineSync.question("")) / 3.6;
+            totalTypes[type]["velocity"] = kmh;
         }
     
         return {
             name: name,
-            co2kmp: totalTypes[type],
+            co2kmp: totalTypes[type]["co2km"],
+            velocity: totalTypes[type]["velocity"],
             stations: [],
             edges: [],
         }
@@ -194,7 +202,8 @@ fs.readdir('./geojson/', (err, files) => {
             if(i < value.edges.length - 1){
                 var d = Dist(value.edges[i]["coords"], value.edges[i+1]["coords"]);
                 var c2km = d * value.co2kmp;
-                finalInfo.edges.push([i + n, i + n + 1, d, c2km]);
+                var vel = value.velocity;
+                finalInfo.edges.push([i + n, i + n + 1, d, c2km, vel]);
             }
         }
 
@@ -205,7 +214,7 @@ fs.readdir('./geojson/', (err, files) => {
         for(var j = 0; j < i; j++){
             var d = Dist(finalInfo.stations[i]["coords"], finalInfo.stations[j]["coords"])
             if(d < epsilon){
-                finalInfo.edges.push([i, j, d, 0]);
+                finalInfo.edges.push([i, j, d, 0, 1.3]);
             }
         }
     }
