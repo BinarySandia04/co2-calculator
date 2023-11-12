@@ -23,11 +23,24 @@ def get_closest(lon, lat):
         i += 1
     return min_i
 
+def hours_to_string(hf):
+    hrs = int(hf)
+    min = int(hf*60) - hrs*60
+    sec = int(hf*3600) - (hrs*60 + min)*60
+    return str(hrs) + "h " + \
+           str(min) + "m " + \
+           str(sec) + "s"
 
 
-path, dist, co2, time = g.dijkstra(get_closest(2.156951683482, 41.437703385), get_closest(1.86273657118123, 41.669071244295))
+path, dist, co2, time = g.dijkstra(
+    get_closest(2.11527, 41.38327),
+    get_closest(2.16446, 41.38655)
+)
+
+print("Followed path:\n")
 for p in path:
-    print(j["nodes"][p])
-print("Dist: " + str(dist))
-print("CO2:  " + str(co2))
-print("Time: " + str(time))
+    print(j["nodes"][p]["name"])
+print()
+print("Dist: " + str(round(dist, 2)) + "km")
+print("CO2:  " + str(round(co2, 3)) + "kg")
+print("Time: " + hours_to_string(time))

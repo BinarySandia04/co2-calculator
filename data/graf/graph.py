@@ -84,4 +84,4 @@ class Co2Graph:
             co2 += self.get_wi(path[i], path[i+1], 2)
             dist += self.get_wi(path[i], path[i+1], 1)
             time += self.get_wi(path[i], path[i+1], 1) / self.get_wi(path[i], path[i+1], 3) / 3.6
-        return path, dist, co2, time
+        return path, dist, co2, 0.8*time
