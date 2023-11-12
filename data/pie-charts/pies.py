@@ -28,18 +28,21 @@ def get_transport_type(t):
 
 df["transport_types"] = df[df.columns[7]].apply(get_transport_type)
 
+def has_yes(d, n):
+    return d[d.columns[n]].value_counts()["Yes"]
+
 df_aux = df.copy()
 
 for ttype in ["private", "public", "active"]:
     df = df_aux[df_aux["transport_types"] == ttype]
     reasons_type = {
-        'Fastest'       : df[df.columns[14]].value_counts()['Yes'],
-        'Cheapest'      : df[df.columns[15]].value_counts()['Yes'],
-        'Comfortable'   : df[df.columns[16]].value_counts()['Yes'],
-        'Only_option'   : df[df.columns[17]].value_counts()['Yes'],
-        'Environmental' : df[df.columns[18]].value_counts()['Yes'],
-        'Healthiest'    : df[df.columns[19]].value_counts()['Yes'],
-        'Need_for_other_trips' : df[df.columns[20]].value_counts()['Yes'],
+        'Fastest'       : has_yes(df, 14),
+        'Cheapest'      : has_yes(df, 15),
+        'Comfortable'   : has_yes(df, 16),
+        'Only_option'   : has_yes(df, 17),
+        'Environmental' : has_yes(df, 18),
+        'Healthiest'    : has_yes(df, 19),
+        'Need_for_other_trips' : has_yes(df, 20),
         'Other' : sum(df[df.columns[21]].value_counts())
     }
     plt.pie(reasons_type.values(), labels = reasons_type.keys())
