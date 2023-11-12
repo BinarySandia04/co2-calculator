@@ -1,0 +1,155 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 1",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P1",
+                        "route_long_name": "Principe Pio",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -3.593473,
+                    40.49174
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 2",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P1",
+                        "route_long_name": "Principe Pio 2",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.593473,
+                    40.49174
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 3",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P1",
+                        "route_long_name": "Principe Pio 3",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    3.593473,
+                    40.49174
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 4",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P2",
+                        "route_long_name": "Principe Pio",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.593473,
+                    39.49174
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 5",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P2",
+                        "route_long_name": "Principe Pio 2",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.593474,
+                    40.49174
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "stop_id": "98305",
+                "stop_name": "Estació 6",
+                "routes": [
+                    {
+                        "route_id": "10T0001C1",
+                        "route_short_name": "P2",
+                        "route_long_name": "Principe Pio 3",
+                        "route_type": 2,
+                        "route_color": "#75B6E0",
+                        "route_text_color": "#FFFFFF"
+                    }
+                ],
+                "agency_name": "Renfe Cercanias"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0.593473,
+                    41.49174
+                ]
+            }
+        }
+    ]
+}
