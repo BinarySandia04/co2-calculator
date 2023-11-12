@@ -6,6 +6,7 @@ import re
 import harversine
 import geocoder
 import random
+from linies import *
 
 with open("Datathon_Results_MOBILITY_2022_original_Students.csv") as f:
     df = pd.read_csv(f)
@@ -79,12 +80,16 @@ def cp_coords(cp):
     except:
         return None
 
+
+
 new_cp_coo = stu[codes].apply(cp_coords)
-print(new_cp_coo)
+
+#new_vals_coo = 
 
 new_df = pd.concat([
     new_cp_coo.to_frame(name="cp"),
     new_uni_coo.to_frame(name="uni"),
+    #new_vals_coo.to_frame(name="vals"),
     stu[codes].to_frame(name="codi")
 ], axis=1)
 
@@ -120,11 +125,17 @@ new_df[["cp-lat", "cp-lon"]] = pd.DataFrame(
     columns = ["cp-lat", "cp-lon"]
 )
 
+
 new_df[["uni-lat", "uni-lon"]] = pd.DataFrame(
     new_df["uni"].values.tolist(),
     columns = ["uni-lat", "uni-lon"]
 )
 
+
+print(new_df.columns)
+
+new_df = new_df.dropna()
+new_df["real_dist"], new_df["co2"], new_df["time"] = zip(map(get_path_data, new_df["cp-lon"], new_df["cp-lat"], new_df["uni-lon"], new_df["uni-lat"]))
 new_df = new_df.drop(columns=["uni", "cp", "codi"])
 
 new_df.to_csv("cp-uni.csv")

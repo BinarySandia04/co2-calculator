@@ -4,7 +4,7 @@ import json
 import graph
 import harversine
 
-result_path = "../../geojson-to-graph/result.json"
+result_path = "../geojson-to-graph/result.json"
 with open(result_path, "r") as f:
     j = json.loads(f.read())
 
@@ -32,11 +32,19 @@ def hours_to_string(hf):
            str(sec) + "s"
 
 
-path, dist, co2, time = g.dijkstra(
-    get_closest(2.11527, 41.38327),
-    get_closest(2.16446, 41.38655)
-)
-
+def get_path_data(lon1, lat1, lon2, lat2):
+    try:
+        res = g.dijkstra(
+            get_closest(lon1, lat1),
+            get_closest(lon2, lat2)
+        )
+        if len(res) != 3:
+            return (0,0,0)
+        return res
+    except:
+        return None, None, None
+    
+'''
 print("Followed path:\n")
 for p in path:
     print(j["nodes"][p]["name"])
@@ -44,3 +52,4 @@ print()
 print("Dist: " + str(round(dist, 2)) + "km")
 print("CO2:  " + str(round(co2, 3)) + "kg")
 print("Time: " + hours_to_string(time))
+'''
