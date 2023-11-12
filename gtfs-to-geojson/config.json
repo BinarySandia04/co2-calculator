@@ -3,6 +3,14 @@
       {
         "agency_key": "tmb",
         "path": "./tmb.zip"
+      },
+      {
+        "agency_key": "rodalies",
+        "path": "./fomento_transit.zip"
+      },
+      {
+        "agency_key": "fgc",
+        "path": "./fgc.zip"
       }
     ]
   }
