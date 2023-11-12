@@ -4,7 +4,7 @@ import numpy
 import pandas as pd
 import re
 import harversine
-import geocoder
+#import geocoder
 import random
 from linies import *
 
@@ -84,12 +84,9 @@ def cp_coords(cp):
 
 new_cp_coo = stu[codes].apply(cp_coords)
 
-#new_vals_coo = 
-
 new_df = pd.concat([
     new_cp_coo.to_frame(name="cp"),
     new_uni_coo.to_frame(name="uni"),
-    #new_vals_coo.to_frame(name="vals"),
     stu[codes].to_frame(name="codi")
 ], axis=1)
 
@@ -110,11 +107,8 @@ new_df["dist"] = new_df \
 
 
 def maybe_int(f):
-    # print(f)
     try:
-        i = int(f)
-        # print("ok")
-        return i
+        return int(f)
     except:
         return None
 
@@ -135,7 +129,7 @@ new_df[["uni-lat", "uni-lon"]] = pd.DataFrame(
 print(new_df.columns)
 
 new_df = new_df.dropna()
-new_df["real_dist"], new_df["co2"], new_df["time"] = zip(map(get_path_data, new_df["cp-lon"], new_df["cp-lat"], new_df["uni-lon"], new_df["uni-lat"]))
+new_df["real_dist"], new_df["co2"], new_df["time"] = zip(*map(get_path_data, new_df["cp-lon"], new_df["cp-lat"], new_df["uni-lon"], new_df["uni-lat"]))
 new_df = new_df.drop(columns=["uni", "cp", "codi"])
 
 new_df.to_csv("cp-uni.csv")
